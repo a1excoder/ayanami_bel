@@ -20,7 +20,7 @@ def photo_worker(message):
                 base_photo=bot.download_file(bot.get_file(message.photo[len(message.photo) - 1].file_id).file_path),
                 title=message.caption.partition('d')[2][1:]
             )
-            bot.send_photo(message.chat.id, conf.download().content)
+            bot.send_photo(message.chat.id, conf.download().content, reply_to_message_id=message.message_id)
 
     elif randint(1, 100) >= 75:
         conf = demapi.Configure(
