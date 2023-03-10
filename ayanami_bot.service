@@ -1,0 +1,13 @@
+# service script for start bot  
+
+[Unit]
+Description=ayanami
+After=multi-user.target
+[Service]
+Type=idle
+User=elliot
+Restart=always
+ExecStart=/usr/bin/python3 /home/elliot/ayanami_bel/main.py > /home/elliot/ayanami_bel/bot.log 2>&1
+WorkingDirectory=/home/elliot/ayanami_bel
+[Install]
+WantedBy=multi-user.target
