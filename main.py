@@ -24,7 +24,7 @@ def photo_worker(message):
 
     elif randint(1, 100) >= 75:
         lock.acquire(True)
-        values_list = db.list(message.chat.id)
+        values_list = [value[1] for value in db.list(message.chat.id)]
         lock.release()
 
         conf = demapi.Configure(
