@@ -7,7 +7,7 @@ After=multi-user.target
 Type=idle
 User=elliot
 Restart=always
-ExecStart=/usr/bin/python3 /home/elliot/ayanami_bel/main.py > /home/elliot/ayanami_bel/bot.log 2>&1
+ExecStart=/usr/bin/python3 /home/elliot/ayanami_bel/main.py
 WorkingDirectory=/home/elliot/ayanami_bel
 [Install]
 WantedBy=multi-user.target
