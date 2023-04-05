@@ -24,12 +24,12 @@ class Data:
         if len(query.fetchall()) == 0:
             self.__cursor.execute("INSERT INTO articles (chat_id, text) VALUES (?, ?)", (chat_id, string))
             self.__connection.commit()
-            return True
+            return query.lastrowid
         else:
-            return False
+            return -1
 
     def list(self, chat_id):
-        query = self.__cursor.execute(f"SELECT id, text from articles where chat_id={chat_id}")
+        query = self.__cursor.execute(f"SELECT id, text from articles where chat_id={chat_id} order by id DESC")
         return query.fetchall()
 
     def delete(self, chat_id, record_id):
@@ -41,7 +41,15 @@ class Data:
 
         return True
 
-    def __del__(self):
-        self.__cursor.close()
-        self.__connection.close()
+    def edit(self, chat_id, record_id, upd_data):
+        self.__cursor.execute(f"UPDATE articles SET text='{upd_data}' "
+                              f"WHERE chat_id = {chat_id} AND id = {record_id}")
+        self.__connection.commit()
 
+        if self.__cursor.rowcount == 0:
+            return False
+        return True
+
+    def __del__(self):
+        # self.__cursor.close()
+        self.__connection.close()

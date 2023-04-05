@@ -40,13 +40,15 @@ def add_to_list(message):
     status = bot.get_chat_member(message.chat.id, message.from_user.id).status
     if status == "administrator" or status == "creator":
         lock.acquire(True)
-        if db.add(message.chat.id, message.text[5:]):
-            bot.send_message(message.chat.id, f"'{message.text[5:]}' was added to the list",
+        phrase_id = db.add(message.chat.id, message.text[5:])
+        lock.release()
+        if phrase_id != -1:
+            bot.send_message(message.chat.id, f"{phrase_id}) '{message.text[5:]}' was added to the list",
                              reply_to_message_id=message.message_id)
         else:
             bot.send_message(message.chat.id, f"'{message.text[5:]}' already on the list",
                              reply_to_message_id=message.message_id)
-        lock.release()
+
     else:
         bot.send_message(message.chat.id, "you do not have enough permissions for this command",
                          reply_to_message_id=message.message_id)
@@ -80,7 +82,26 @@ def view_list(message):
     if len(values_list) == 0:
         bot.send_message(message.chat.id, "list for this chat is empty", reply_to_message_id=message.message_id)
     else:
-        bot.send_message(message.chat.id, '\n'.join([f"{value[0]} - '{value[1]}'" for value in values_list]), reply_to_message_id=message.message_id)
+        bot.send_message(message.chat.id, '\n'.join([f"{value[0]}) '{value[1]}'" for value in values_list]),
+                         reply_to_message_id=message.message_id)
+
+
+@bot.message_handler(commands=['edit'])
+def edit_phrase(message):
+    edit_list = str(message.text).split()
+    if len(edit_list) >= 3 and edit_list[1].isdigit():
+        lock.acquire(True)
+        upd_stat = db.edit(message.chat.id, int(edit_list[1]), ' '.join(edit_list[2:]))
+        lock.release()
+
+        if upd_stat:
+            bot.send_message(message.chat.id, f"{edit_list[1]} phrase has been changed",
+                             reply_to_message_id=message.message_id)
+        else:
+            bot.send_message(message.chat.id, f"{edit_list[1]} phrase has not been modified",
+                             reply_to_message_id=message.message_id)
+    else:
+        bot.send_message(message.chat.id, "incorrect request format", reply_to_message_id=message.message_id)
 
 
 if __name__ == "__main__":
