@@ -22,7 +22,7 @@ def photo_worker(message):
             )
             bot.send_photo(message.chat.id, conf.download().content, reply_to_message_id=message.message_id)
 
-    elif randint(1, 100) >= 75:
+    elif randint(1, 100) >= 95:
         lock.acquire(True)
         values_list = [value[1] for value in db.list(message.chat.id)]
         lock.release()
