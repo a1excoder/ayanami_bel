@@ -12,7 +12,7 @@
 git clone https://github.com/a1excoder/ayanami_bel
 cd ayanami_bel/
 sudo docker build --tag python-docker .
-sudo docker run --restart=always -d -e API_KEY=$API_KEY python-docker
+sudo docker run --restart=always -d -e API_KEY=$API_KEY ayanami_bot
 ```
 
 ### ![@ptushkea](https://github.com/ptushkea) rewritten bot
