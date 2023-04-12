@@ -4,7 +4,7 @@
 ### how to run bot
 ```bash
 # open ~/.bashrc
-# write to the end of the file export $API_KEY="<TELEGRAM_TOKEN>"
+# write to the end of the file export API_KEY="<TELEGRAM_TOKEN>"
 # save & close file
 
 # then apply by command source ~/.bashrc
