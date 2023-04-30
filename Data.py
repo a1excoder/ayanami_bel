@@ -29,7 +29,7 @@ class Data:
             return -1
 
     def list(self, chat_id):
-        query = self.__cursor.execute(f"SELECT id, text from articles where chat_id={chat_id} order by id DESC")
+        query = self.__cursor.execute(f"SELECT id, text from articles where chat_id=? order by id DESC", (chat_id))
         return query.fetchall()
 
     def delete(self, chat_id, record_id):
@@ -42,8 +42,8 @@ class Data:
         return True
 
     def edit(self, chat_id, record_id, upd_data):
-        self.__cursor.execute(f"UPDATE articles SET text='{upd_data}' "
-                              f"WHERE chat_id = {chat_id} AND id = {record_id}")
+        self.__cursor.execute(f"UPDATE articles SET text=? "
+                              f"WHERE chat_id =? AND id =?", (upd_data, chat_id, record_id))
         self.__connection.commit()
 
         if self.__cursor.rowcount == 0:
